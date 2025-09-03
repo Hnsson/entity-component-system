@@ -1,19 +1,24 @@
 # entity-component-system
-The Library should include the following parts to complete the Entity Component System (ECS):
+This library implements an object-oriented ECS (Entity Component System) in C++.
 
 ## Entity - The game object
-* An entity (ID) is a container that represents something in the world containing components.
-* On its own it's nothing more than an ID, no data or behavior. Its only meaning is it's components attached to it.
+* An `Entity`is an object in the world that **owns components**.
+* On its own, an entity has no behavior, but its attached components define its capabilities.
+* Example:
+```c++
+ECS ecs;
+Entity& player = ecs.addEntity();
+// Future implementation:
+player.addComponent<Transform>(0, 0);
+```
 
-## Component - The data
-* A small, reusable piece of code.
-* Mixing multiple components creates complex game objects without inheritance hierarchies, just flat relationships.
-* Example components:
-  - `Transform` - containing position, rotation, ...
-  - `Renderable` - what is looks like being rendered.
+## Component - Data + behavior
+* Components are small classes that contain both data and methods (`init()`, `update()`, `render()`).
+* Components can reference their owning entity to access other components.
+* Example:
+  - `Transform` - stores position, rotation, scale.
+  - `Collider` - handles collision logic
+  - `...`
 
-## System - The behavior
-* Where the logic lives. It operates over all entities, reading component data, updating it, as well as creating / deleting.
-* Example systems:
-  - `Movement system` - looks for `Transform` and update each frame.
-  - `Render system` - look for `Transform` and `Renderable` and draws on screen.
+## ECS - Managing entities and components (registry)
+* The ECS class manages all entities and their components.
