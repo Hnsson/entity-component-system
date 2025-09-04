@@ -7,11 +7,12 @@ class Component {
 public:
   virtual ~Component() = default;
 
-  virtual void init() = 0;
-  virtual void eventHandler();
-  virtual void update();
-  virtual void render();
-private:
+  // default empty to complete vtable
+  virtual void init() {};
+  virtual void eventHandler() {};
+  virtual void update() {};
+  virtual void render() {};
+
   Entity* entity;
 };
 

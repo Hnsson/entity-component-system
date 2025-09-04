@@ -10,7 +10,7 @@ public:
 	public:
 		int x, y;
 		Vector2f() : x(0), y(0) {};
-		Vector2f(int x, int y) : x(x), y(y) {}
+		Vector2f(int x, int y) : x(x), y(y) {};
 
 		Vector2f& Add(const Vector2f& vec) {
       this->x += vec.x;
@@ -34,7 +34,7 @@ public:
       this->x /= vec.x;
       this->y /= vec.y;
 
-      return *This;
+      return *this;
     };
 
 		friend Vector2f& operator+(Vector2f& v1, const Vector2f& v2) { return v1.Add(v2); }

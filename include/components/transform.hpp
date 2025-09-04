@@ -1,16 +1,17 @@
-#ifndef Transform
-#define Transform
+#ifndef TRANSFORM_COMPONENT
+#define TRANSFORM_COMPONENT
 
 #include "../component.hpp"
-#include "../physics.h"
+#include "../physics.hpp"
 
-struct Transform : public Component {
+class Transform : public Component {
 public:
   Physics::Vector2f position;
   Physics::Vector2f velocity;
 
   int speed = 3;
   int gravity = 4;
+  int scale = 1;
   bool applyGravity = false;
 
 	Transform() {
@@ -29,10 +30,15 @@ public:
 		position.y = y;
 		this->scale = scale;
 	}
+  ~Transform() {}
 
   void init() override {
     velocity.Zero();
   }
-}
 
-#endif // Transform
+  void eventHandler() override {}
+  void update() override {}
+  void render() override {}
+};
+
+#endif // TRANSFORM_COMPONENT
