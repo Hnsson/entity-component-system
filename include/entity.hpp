@@ -28,9 +28,15 @@ public:
   Entity() : id(0) {}
   Entity(std::uint32_t id) : id(id) {}
 
-  void eventHandler();
-  void update();
-  void render();
+  void eventHandler() {
+    for (auto& c : components) c->eventHandler();
+  }
+  void update() {
+    for (auto& c : components) c->update();
+  }
+  void render() {
+    for (auto& c : components) c->render();
+  }
 
   bool operator==(Entity& other) { return this->id == other.id; }
   bool operator!=(Entity& other) { return this->id != other.id; }
@@ -39,6 +45,11 @@ public:
   std::uint32_t getID() { return this->id; }
   // C++20 way of creating variadic template (using argument deduction)
   template <typename T> T& addComponent(const auto&... args) {
+    componentID typeID = getComponentTypeID<T>();
+    if (typeID >= max_components) {
+      // Probably shouldn't throw runtime error, should handle it better.
+      throw std::runtime_error("Exceeded max component limit (" + std::to_string(max_components) + ")");
+    }
     // If one already exsits, just return the existing one
     if (hasComponent<T>()) return *getComponent<T>();
 
@@ -47,7 +58,6 @@ public:
     std::unique_ptr<Component> ptr{ component };
     components.emplace_back(std::move(ptr));
 
-    componentID typeID = getComponentTypeID<T>();
     activeComponents.set(typeID);
 
     component->init();

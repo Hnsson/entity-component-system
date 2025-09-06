@@ -37,7 +37,10 @@ public:
   }
 
   void eventHandler() override {}
-  void update() override {}
+  void update() override {
+    position.x += velocity.x;
+    position.y += velocity.y;
+  }
   void render() override {}
 };
 

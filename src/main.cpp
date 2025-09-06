@@ -3,29 +3,42 @@
 #include "ecs.hpp"
 #include "components/transform.hpp"
 
-int main() {
+namespace Game {
   ECS ecs;
+  Entity* player = nullptr;
+  Entity* enemy = nullptr;
+}
 
-  Entity& player = ecs.addEntity();
-  Entity& enemy = ecs.addEntity();
+void eventHandler() {
+  Game::ecs.eventHandler();
 
-  player.addComponent<Transform>(1);
-  std::cout << "Enemy Has component? " << enemy.hasComponent<Transform>() << std::endl;
-  enemy.addComponent<Transform>(2);
-  std::cout << "Has component? " << player.hasComponent<Transform>() << std::endl;
-  std::cout << "Has component? " << player.hasComponent<Transform>() << std::endl;
-  std::cout << "Has component? " << player.hasComponent<Transform>() << std::endl;
-  std::cout << "Enemy Has component? " << player.hasComponent<Transform>() << std::endl;
+  // Simulate player pressing D (moving right)
+  Transform* p_transform = Game::player->getComponent<Transform>();
+  p_transform->velocity.x = 1;
+}
 
-  Transform* transform = player.getComponent<Transform>();
-  Transform* transform_enemy = enemy.getComponent<Transform>();
+void update() {
+  Game::ecs.update();
 
-  std::cout << "Player transform: " << transform->scale << std::endl;
-  player.addComponent<Transform>(2);
-  std::cout << "Player transform: " << transform->scale << std::endl;
-  std::cout << "Enemy transform: " << transform_enemy->scale << std::endl;
+  std::cout << "Player position: " << Game::player->getComponent<Transform>()->position << std::endl;
+}
 
-  std::cout << "Hello from main!" << std::endl;
-  return 0;
+void render() {
+  Game::ecs.render();
+}
+
+int main() {
+  Game::player = &Game::ecs.addEntity();
+  Game::enemy = &Game::ecs.addEntity();
+
+  Game::player->addComponent<Transform>(1);
+  Game::enemy->addComponent<Transform>(2);
+
+  while (true) {
+    eventHandler();
+    update();
+    render();
+    sleep(1);
+  }
 }
 

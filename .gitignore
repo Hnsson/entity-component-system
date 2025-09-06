@@ -10,6 +10,7 @@ tmux.sh
 *.o
 *.obj
 main
+tests
 
 # Precompiled Headers
 *.gch
